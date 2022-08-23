@@ -1,0 +1,34 @@
+{% load static %}
+<html> 
+<head>
+    <title> IShare </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css'%}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">   
+</head>
+    <body>
+    <div class="login-box">
+        {% include 'partials/_alerts.html'%}
+        <h1>Register</h1>
+            <form action="{% url 'register' %}" method="POST">
+                {% csrf_token %}
+            <p><label for="first_name">First Name</label></p>
+            <input type="text" name="first_name" placeholder="Enter First name" class="form-control" required>
+            <p><label for="last_name">Last Name</label></p>
+            <input type="text" name="last_name" placeholder="Enter Last name" class="form-control" required>
+            <p><label for="username">Username</label></p>
+            <input type="text" name="username" placeholder="Enter Username" class="form-control" required>
+            <p><label for="email">Email</label></p>
+            <input type="email" name="email" placeholder="Enter Email" class="form-control" required>
+            <p><label for="phone">Phone</label></p>
+            <input type="text" name="phone" placeholder="Enter phone number" class="form-control" required>
+            <p><label for="password2">Password</label></p>
+            <input type="password" name="password" placeholder="Enter Password" class="form-control" required>
+            <p><label for="password">Confirm Password</label></p>
+            <input type="password" name="password2" placeholder="Confirm Password" class="form-control" required>
+            <input type="submit" name="submit" value="Register">
+            <a href="{% url 'login' %}" >Already have account?? Signin</a>  
+            </form>
+        </div>
+    
+    </body>
+</html>

@@ -1,0 +1,91 @@
+{% load static%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css'%}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Ishare</title>
+  </head>
+  <body>
+      <section id="nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="{% url 'index'%}"><h3>ISHARE</h3></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'index'%}">Home </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'dashboard' %}">My-Listings</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{%url 'myinquiries' %}">My-Inquiries</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'inquiry1'%}">Inquiries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create'%}">Create Listing</a>
+                  </li>
+              </ul>
+            </div>
+          </nav>
+      </section>
+    <!--Banner-->
+    <header class="masthead" id="home-section">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-center text-center">
+          <div class="col-lg-5 align-self-end">
+            <h1 class="text-uppercase text-white font-weight-bold"> <span>{{request.user.first_name}}'s Dashboard</span></h1>
+          </div>
+          <div class="col-lg-8 align-self-baseline">
+            <h6 class="subheading">manage your listings and inquiries here</h6>
+            <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index'%}">Home <i class="fa fa-arrow-right"></i></a></span><span>Dashboard <i class="fa fa-arrow-right"></i></span></p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <section class="ftco-section" id="myinquiries">
+    	<div class="container">
+    		<div class="row justify-content-center py-5 mt-5">
+          <div class="col-md-12 heading-section text-center ftco-animate">
+          	<h1 class="big big-2">My Inquiries</h1>
+            <p>Here are inquiries that made if you get error means user removed that</p>
+          </div>
+        </div>
+        {% if myinquiries %}
+    		<div class="row">
+          {% for inquiry in myinquiries %}
+					<div class="col-md-4 text-center d-flex ftco-animate">
+						<a href="{% url 'listing' inquiry.listing_id%}" class="services-1">
+							<div class="desc">
+                <h3 class="mb-5">{{inquiry.listing}}</h3>
+                <h3 class="mb-5">Click here to see listing</h3>
+							</div>
+						</a>
+          </div>
+          {% endfor %} 
+        </div>
+           
+      </div>
+      {%else%}
+        <p>You have not made any inquiries yet</p>
+          {%endif%}
+    </section>    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>    

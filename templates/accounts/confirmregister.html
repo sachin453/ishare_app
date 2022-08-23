@@ -1,0 +1,33 @@
+{% load static %}
+<html>
+<head>
+    <title>Ishare </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css'%}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">   
+</head>
+    <body>
+    <div class="login-box">
+        {% include 'partials/_alerts.html' %}
+        <h1>Confirm Register</h1>
+            <form action="{% url 'confirmregister' %}" method="POST">
+                {% csrf_token %}
+            <p><label for="first_name">First Name</label></p>
+            <input type="text" name="first_name" placeholder="Enter First name" class="form-control" value="{{first_name}}"readonly>
+            <p><label for="last_name">Last Name</label></p>
+            <input type="text" name="last_name" placeholder="Enter Last name" class="form-control" value="{{last_name}}"readonly>
+            <p><label for="username">Username</label></p>
+            <input type="text" name="username" placeholder="Enter Username" class="form-control" value="{{username}}"readonly>
+            <p><label for="email">Email</label></p>
+            <input type="email" name="email" placeholder="Enter Email" class="form-control" value="{{email}}"readonly>
+            <p><label for="phone">Phone</label></p>
+            <input type="text" name="phone" placeholder="Enter phone number" class="form-control" value="{{phone}}"readonly>
+            <p><label for="password2">Password</label></p>
+            <input type="password" name="password" placeholder="Enter Password" class="form-control" value="{{password}}"readonly>
+            <p><label for="confirmcode">Confirm Password(Send on your mail)</label></p>
+            <input type="text" name="confirmcode"  class="form-control" required>
+            <input type="submit" name="submit" value="Register">  
+            </form>
+        </div>
+    
+    </body>
+</html>

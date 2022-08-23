@@ -1,0 +1,162 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/magnific-popup.css'%}">
+
+        <link rel="stylesheet" href="{% static 'css/aos.css'%}">
+
+        <link rel="stylesheet" href="{% static 'css/ionicons.min.css'%}">
+        <link rel="stylesheet" href="{% static 'css/flaticon.css'%}">
+        <link rel="stylesheet" href="{% static 'css/icomoon.css'%}">
+	    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <title>iShare</title>
+    </head>
+    <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+        
+        <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+        <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target" id="ftco-navbar">
+          <div class="container">
+            <a class="navbar-brand" href="{% url 'index'%}">IShare</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span> 
+          </button>
+    
+            <div class="collapse navbar-collapse" id="ftco-nav">
+              <ul class="navbar-nav nav ml-auto">
+                <li class="nav-item"><a href="{% url 'index'%}" class="nav-link"><span>Home</span></a></li>
+                <li class="nav-item"><a href="{% url 'about'%}" class="nav-link"><span>About</span></a></li>
+                <li class="nav-item"><a href="{% url 'listings'%}" class="nav-link"><span>Ads</span></a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'dashboard' %}" class="nav-link"><span>{{request.user.first_name}}(Dashboard)</span></a></li>
+                <li class="nav-item"><a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><span>Logout</span></a>
+                  <form action="{% url 'logout' %}" method="POST" id="logout">
+                    {% csrf_token %}
+                    <input type="hidden">
+                  </form></li>
+                {% else %}
+                <li class="nav-item"><a href="{% url 'register' %}" class="nav-link"><span>Register</span></a></li>
+                <li class="nav-item"><a href="{% url 'login'%}" class="nav-link"><span>Login</span></a></li>
+                {% endif %}  
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <header class="masthead" id="home-section">
+          <div class="container h-100">
+            <div class="row h-100 align-items-center justify-content-center text-center">
+              <div class="col-lg-5 align-self-end">
+                {% include 'partials/_alerts.html' %}
+                <h6 class="subheading"></h6>
+                <h1 class="text-uppercase text-white font-weight-bold">Available <span>Listings</span></h1>
+              </div>
+              <div class="col-lg-8 align-self-baseline">
+                <h2>Sharing made easy</h2>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section class="ftco-section" id="ads-sections">
+          <div class="container">
+            <div class="row justify-content-center mb-5 pb-5">
+              <div class="col-md-7 heading-section text-center ftco-animate">
+                <h2 class="mb-4">ADS</h2>
+                <p>All Ads that are available</p>
+              </div>
+            </div>
+            <div class="row d-flex">
+              {% if listings %}
+              {% for listing in listings %}
+              <div class="col-md-4 d-flex ftco-animate">
+                <div class="blog-entry justify-content-end">
+                  <img href="{% url 'listing' listing.id %}" class="block-20" src="{{ listing.photo_main.url }} " alt="">
+                
+                  <div class="text mt-3 float-right d-block">
+                    <div class="d-flex align-items-center mb-3 meta">
+                      <p class="mb-0">
+                        <span class="mr-2">{{listing.list_date}}</span>
+                        <a  class="mr-2">{{listing.type}}</a>
+                        <a  class="meta-chat">{{listing.College}}</a>
+                      </p>
+                    </div>
+                   {% if user.is_authenticated %}
+                    <h3 class="heading"><a href="{% url 'listing' listing.id %}">{{listing.title}}<br>(₹ {{ listing.price | intcomma }})</a></h3>
+                    {% else %}
+                    <h3 class="heading"><a href="{% url 'login' %}">{{listing.title}}<br>(₹ {{ listing.price | intcomma }})</a></h3>
+                    {%endif%}
+                    <p>{{listing.description}}</p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <div class="col-md-12">
+              <p>Currently there are no listings Available</p>
+              </div>
+              {%endif%}
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {% if listings.has_other_pages %}
+                <ul class="pagination">
+                  {% if listings.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{listings.previous_page_number}}">&laquo;</a>
+                  </li>
+                  {% else%}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">&laquo;</a>
+                  </li>
+                  {% endif %}
+                  {% for i in listings.paginator.page_range %}
+                    {% if listings.number == i%}
+                    <li class="page-item active">
+                      <a class="page-link">{{i}}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{i}}">{{i}}</a>
+                    </li>
+                    {% endif %}
+                  {%endfor%}
+                    {% if listings.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{listings.next_page_number}}">&raquo;</a>
+                    </li>
+                    {% else%}
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">&raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </section>    
+        {% include 'partials/_footer.html' %}
+        <script src="{% static 'js/jquery.min.js'%}"></script>
+        <script src="{% static 'js/jquery-migrate-3.0.1.min.js'%}"></script>
+        <script src="{% static 'js/popper.min.js'%}"></script>
+        <script src="{% static 'js/bootstrap.min.js'%}"></script>
+        <script src="{% static 'js/jquery.easing.1.3.js'%}"></script>
+        <script src="{% static 'js/jquery.waypoints.min.js'%}"></script>
+        <script src="{% static 'js/jquery.stellar.min.js'%}"></script>
+        <script src="{% static 'js/owl.carousel.min.js'%}"></script>
+        <script src="{% static 'js/jquery.magnific-popup.min.js'%}"></script>
+        <script src="{% static 'js/aos.js'%}"></script>
+        <script src="{% static 'js/jquery.animateNumber.min.js'%}"></script>
+        <script src="{% static 'js/scrollax.min.js'%}"></script>
+  
+        <script src="{% static 'js/main.js'%}"></script>
+    </body>
+</html>

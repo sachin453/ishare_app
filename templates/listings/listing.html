@@ -1,0 +1,122 @@
+{% load static%}
+{% load crispy_forms_tags %}
+{% load humanize %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css'%}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Ishare</title>
+  </head>
+  <body>
+    <header class="masthead" id="home-section">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-center text-center">
+          <div class="col-lg-5 align-self-end">
+            <h1 class="text-uppercase text-white font-weight-bold"> <span>{{listing.title}}</span></h1>
+          </div>
+          <div class="col-lg-8 align-self-baseline">
+            <h6 class="subheading">{{listing.type}}, {{listing.College}}</h6>
+            <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index'%}">Home <i class="fa fa-arrow-right"></i></a></span><span>Listings<i class="fa fa-arrow-right"></i></span>{{listing.title}}<span><i class="fa fa-arrow-right"></i></span></p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+{% include 'partials/_alerts.html'%}
+<section id="listing" class="py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <!-- Home Main Image -->
+        <img src="{{listing.photo_main.url}}" alt="" class="img-main img-fluid mb-3">
+        <!-- Thumbnails -->
+        <!-- Fields -->
+
+        <!-- Description -->
+      </div>
+    </div>
+  </div>
+</section>
+<section class="ftco-section ftco-no-pb" id="mylisting">
+    	<div class="container">
+    		<div class="row">
+    				<div class="resume-wrap ftco-animate">
+    					<span class="date">{{listing.title}}</span>
+              <h2>Category: {{listing.category}}</h2>
+              <h2>Price: {{ listing.price | intcomma }}</h2>
+              <h2>List Date: {{listing.list_date}}</h2>
+              <h2>Owner: {{ listing.owner.first_name }}</h2>
+              <h2>Phone Number: {{ listing.owner.phone }}</h2>
+    					<span class="position">Description: {{listing.description}}</span>
+    					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                  <button class="btn btn-dark" data-toggle="modal" data-target="#inquiryModal">Make Inquiry</button>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+  <!-- Inquiry Modal -->
+  <div class="modal fade" id="inquiryModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="inquiryModalLabel">Make An Inquiry</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'inquirys'%}" method="POST">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+              <input type="hidden" name="user_id" value="{{ user.id }}">
+            {%else%}
+            <input type="hidden" name="user_id" value="0">
+            {%endif%}
+            <input type="hidden" name="owner_mail" value="{{listing.owner.email}}">
+            <input type="hidden" name="listing_id" value="{{listing.id}}">
+            <input type="hidden" name="owner_id" value="{{listing.owner.id}}">
+            <div class="form-group">
+              <label for="property_name" class="col-form-label">Item:</label>
+              <input type="text" name="listing" class="form-control" value="{{listing.title}}" readonly>
+            </div>
+            <div class="form-group">
+              <label for="name" class="col-form-label">Name:</label>
+              <input type="text" name="name" class="form-control" {%if user.is_authenticated%} value = "{{ user.first_name }} {{ user.last_name }}" readonly{%else%} required {%endif%}>
+            </div>
+            <div class="form-group">
+              <label for="email" class="col-form-label">Email:</label>
+              <input type="email" name="email" class="form-control" {%if user.is_authenticated%} value = "{{ user.email }}" readonly{%else%} required {%endif%}>
+            </div>
+            <div class="form-group">
+              <label for="phone" class="col-form-label">Phone:</label>
+              <input type="text" name="phone" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="message" class="col-form-label">Message:</label>
+              <textarea name="message" class="form-control"></textarea>
+            </div>
+            <hr>
+            <input type="submit" value="Send" class="btn btn-block btn-secondary">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>    

@@ -1,0 +1,110 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/magnific-popup.css'%}">
+
+        <link rel="stylesheet" href="{% static 'css/aos.css'%}">
+
+        <link rel="stylesheet" href="{% static 'css/ionicons.min.css'%}">
+        <link rel="stylesheet" href="{% static 'css/flaticon.css'%}">
+        <link rel="stylesheet" href="{% static 'css/icomoon.css'%}">
+	    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <title>iShare</title>
+    </head>
+ <body>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+	  
+	  
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target" id="ftco-navbar">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'index'%}">IShare</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span> 
+      </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav nav ml-auto">
+            <li class="nav-item"><a href="{% url 'index'%}" class="nav-link"><span>Home</span></a></li>
+            <li class="nav-item"><a href="{% url 'about'%}" class="nav-link"><span>About</span></a></li>
+            <li class="nav-item"><a href="{% url 'listings'%}" class="nav-link"><span>Ads</span></a></li>
+            {% if user.is_authenticated %}
+            <li class="nav-item"><a href="{% url 'dashboard' %}" class="nav-link"><span>{{request.user.first_name}}(Dashboard)</span></a></li>
+            <li class="nav-item"><a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><span>Logout</span></a>
+              <form action="{% url 'logout' %}" method="POST" id="logout">
+                {% csrf_token %}
+                <input type="hidden">
+              </form></li>
+            {% else %}
+            <li class="nav-item"><a href="{% url 'register' %}" class="nav-link"><span>Register</span></a></li>
+            <li class="nav-item"><a href="{% url 'login'%}" class="nav-link"><span>Login</span></a></li>
+            {% endif %}  
+          </ul>
+        </div>
+      </div>
+    </nav>
+	  <header class="masthead" id="home-section">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-center text-center">
+          <div class="col-lg-5 align-self-end">
+            {% include 'partials/_alerts.html' %}
+            <h1 class="text-uppercase text-white font-weight-bold"><span>About Us</span></h1>
+          </div>
+          <div class="col-lg-8 align-self-baseline">
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!--<section class="ftco-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 sidebar ftco-animate">
+            <div class="sidebar-box ftco-animate">
+              <h3 class="heading-sidebar">Team</h3>
+              <div class="block-21 mb-4 d-flex">
+                <a class="blog-img mr-4" style="background-image: url({% static 'images/sachin.jpg'%});"></a>
+                <div class="text">
+                  <div class="meta">
+                    <div><a href="https://www.linkedin.com/in/sachin-kuntal-42ab69200/"><span class="icon-person"></span>Sachin Kuntal</a></div>
+                  </div>
+                </div>
+              </div>
+              <div class="block-21 mb-4 d-flex">
+                <!-- <a class="blog-img mr-4" style="background-image: url({% static 'images/shresth.jpg'%});"></a> -->
+                <!--<div class="text">
+                  <div class="meta">
+                    <div><a ><span class="icon-person"></span>Devesh Rajput</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+       </div>
+      </div>
+    </section> <!-- .section --> 
+  {% include 'partials/_footer.html' %}
+        <script src="{% static 'js/jquery.min.js'%}"></script>
+        <script src="{% static 'js/jquery-migrate-3.0.1.min.js'%}"></script>
+        <script src="{% static 'js/popper.min.js'%}"></script>
+        <script src="{% static 'js/bootstrap.min.js'%}"></script>
+        <script src="{% static 'js/jquery.easing.1.3.js'%}"></script>
+        <script src="{% static 'js/jquery.waypoints.min.js'%}"></script>
+        <script src="{% static 'js/jquery.stellar.min.js'%}"></script>
+        <script src="{% static 'js/owl.carousel.min.js'%}"></script>
+        <script src="{% static 'js/jquery.magnific-popup.min.js'%}"></script>
+        <script src="{% static 'js/aos.js'%}"></script>
+        <script src="{% static 'js/jquery.animateNumber.min.js'%}"></script>
+        <script src="{% static 'js/scrollax.min.js'%}"></script>
+  
+        <script src="{% static 'js/main.js'%}"></script>
+    </body>
+</html>
